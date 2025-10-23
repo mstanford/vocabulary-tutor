@@ -1,0 +1,11 @@
+services:
+  frontend:
+    build: .
+    container_name: vocab-quiz
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    volumes:
+      # For development: hot-reload the React source
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules
