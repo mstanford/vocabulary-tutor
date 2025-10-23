@@ -74,25 +74,30 @@ body {
   border-color: #667eea;
 }
 
-/* Topic Selector */
-.topic-selector {
-  background: white;
-  border-radius: 12px;
-  padding: 40px;
-  max-width: 700px;
+/* Topic Selector - Full Window */
+.topic-selector-full {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   width: 100%;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  background: white;
+  padding: 30px;
 }
 
-.topic-selector h1 {
+.topic-header {
+  text-align: center;
+  margin-bottom: 30px;
+  flex-shrink: 0;
+}
+
+.topic-header h1 {
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-size: 2.5em;
 }
 
 .topic-info {
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .topic-language {
@@ -107,50 +112,100 @@ body {
   font-size: 0.95em;
 }
 
-.topics-grid {
+/* Topics Grid - Fills window */
+.topics-grid-full {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 15px;
-  margin-bottom: 30px;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 5px;
 }
 
-.topic-button {
-  background: #f9f9f9;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+/* Topic Button Styles */
+.topic-button-full {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s;
-  text-align: center;
-  font-size: 1em;
+  font-size: 0.95em;
   font-weight: 500;
-  color: #333;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 140px;
 }
 
-.topic-button:hover {
-  background: #f0f0f0;
-  border-color: #667eea;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+/* Not started - grey */
+.topic-button-full.not-started {
+  background: #e8e8e8;
+  color: #666;
 }
 
-.topic-button:active {
-  transform: translateY(0);
+.topic-button-full.not-started:hover {
+  background: #d8d8d8;
+  transform: scale(1.05);
+}
+
+/* Incomplete - red */
+.topic-button-full.incomplete {
+  background: #ffcdd2;
+  color: #c62828;
+  border: 2px solid #ef5350;
+}
+
+.topic-button-full.incomplete:hover {
+  background: #ef9a9a;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+/* Proficient - green */
+.topic-button-full.proficient {
+  background: #c8e6c9;
+  color: #1b5e20;
+  border: 2px solid #4caf50;
+}
+
+.topic-button-full.proficient:hover {
+  background: #a5d6a7;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
 .topic-number {
   display: block;
-  font-size: 1.5em;
-  color: #667eea;
+  font-size: 1.3em;
   font-weight: 700;
   margin-bottom: 8px;
+  opacity: 0.8;
 }
 
 .topic-name {
   display: block;
-  color: #333;
-  line-height: 1.4;
+  line-height: 1.3;
   word-break: break-word;
+  text-align: center;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.topic-accuracy {
+  display: block;
+  font-size: 0.85em;
+  font-weight: 700;
+  margin-top: auto;
+  opacity: 0.9;
+}
+
+.back-button {
+  flex-shrink: 0;
+  align-self: center;
+  max-width: 300px;
 }
 
 /* Topic Badges/Scores */

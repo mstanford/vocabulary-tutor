@@ -1,103 +1,52 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { getTopicScore } from '../services/scoreStorage';
 
 export default function TopicSelector({ topics, lang, level, onSelect, onBack }) {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // Filter topics based on search query
-  const filteredTopics = useMemo(() => {
-    if (!searchQuery.trim()) return topics;
-    return topics.filter(topic =>
-      topic.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [topics, searchQuery]);
-
-  const isLargeList = topics.length > 8;
-
   // Get score for a topic
   const getScore = (topic) => {
     return getTopicScore(lang, level, topic);
   };
 
+  // Determine status: 'not-started', 'proficient', or 'incomplete'
+  const getTopicStatus = (topic) => {
+    const score = getScore(topic);
+    if (!score) return 'not-started';
+    if (score.accuracy >= 80) return 'proficient';
+    return 'incomplete';
+  };
+
   return (
-    <div className="topic-selector">
-      <h1>Vocabulary Tutor</h1>
-      <div className="topic-info">
-        <p className="topic-language">{lang === 'nederlands' ? '🇳🇱 Dutch' : '🇫🇷 French'} - Level {level}</p>
-        <p className="topic-count">Select a topic ({filteredTopics.length} of {topics.length})</p>
+    <div className="topic-selector-full">
+      <div className="topic-header">
+        <h1>Vocabulary Tutor</h1>
+        <div className="topic-info">
+          <p className="topic-language">{lang === 'nederlands' ? '🇳🇱 Dutch' : '🇫🇷 French'} - Level {level}</p>
+          <p className="topic-count">{topics.length} topics</p>
+        </div>
       </div>
 
-      {/* Search bar for large lists */}
-      {isLargeList && (
-        <div className="topic-search">
-          <input
-            type="text"
-            placeholder="🔍 Search topics..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="topic-search-input"
-          />
-          {searchQuery && (
+      {/* Topics grid - fill entire window */}
+      <div className="topics-grid-full">
+        {topics.map((topic, index) => {
+          const status = getTopicStatus(topic);
+          const score = getScore(topic);
+          return (
             <button
-              className="topic-search-clear"
-              onClick={() => setSearchQuery('')}
+              key={index}
+              className={`topic-button-full ${status}`}
+              onClick={() => onSelect(topic)}
             >
-              ✕
+              <span className="topic-number">{index + 1}</span>
+              <span className="topic-name">{topic}</span>
+              {score && (
+                <span className="topic-accuracy">{score.accuracy}%</span>
+              )}
             </button>
-          )}
-        </div>
-      )}
+          );
+        })}
+      </div>
 
-      {/* Topics list/grid - switches based on count */}
-      {isLargeList ? (
-        <div className="topics-list">
-          {filteredTopics.length > 0 ? (
-            filteredTopics.map((topic, index) => {
-              const score = getScore(topic);
-              return (
-                <button
-                  key={index}
-                  className="topic-list-item"
-                  onClick={() => onSelect(topic)}
-                >
-                  <span className="topic-item-number">{topics.indexOf(topic) + 1}</span>
-                  <span className="topic-item-name">{topic}</span>
-                  {score && (
-                    <span className={`topic-score ${score.accuracy >= 70 ? 'good' : score.accuracy >= 50 ? 'okay' : 'needswork'}`}>
-                      {score.accuracy}%
-                    </span>
-                  )}
-                </button>
-              );
-            })
-          ) : (
-            <p className="no-results">No topics match your search.</p>
-          )}
-        </div>
-      ) : (
-        <div className="topics-grid">
-          {filteredTopics.map((topic, index) => {
-            const score = getScore(topic);
-            return (
-              <button
-                key={index}
-                className="topic-button"
-                onClick={() => onSelect(topic)}
-              >
-                <span className="topic-number">{topics.indexOf(topic) + 1}</span>
-                <span className="topic-name">{topic}</span>
-                {score && (
-                  <span className={`topic-badge ${score.accuracy >= 70 ? 'good' : score.accuracy >= 50 ? 'okay' : 'needswork'}`}>
-                    {score.accuracy}%
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
-      <button className="secondary-button" onClick={onBack}>
+      <button className="secondary-button back-button" onClick={onBack}>
         ← Back to Language Selection
       </button>
     </div>
