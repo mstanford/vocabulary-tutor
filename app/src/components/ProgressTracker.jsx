@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ProgressTracker({ progress, onRetry, onChangeLanguage }) {
+export default function ProgressTracker({ progress, onRetry, onBackToTopics, onChangeLanguage }) {
   const accuracy = progress.total > 0
     ? Math.round((progress.correct / progress.total) * 100)
     : 0;
@@ -36,6 +36,9 @@ export default function ProgressTracker({ progress, onRetry, onChangeLanguage })
       <div className="progress-actions">
         <button className="primary-button" onClick={onRetry}>
           Try Again
+        </button>
+        <button className="secondary-button" onClick={onBackToTopics}>
+          Back to Topics
         </button>
         <button className="secondary-button" onClick={onChangeLanguage}>
           Change Language

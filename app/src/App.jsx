@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useVocabulary } from './hooks/useVocabulary';
+import { saveScore } from './services/scoreStorage';
 import LanguageSelector from './components/LanguageSelector';
 import TopicSelector from './components/TopicSelector';
 import VocabularyQuiz from './components/VocabularyQuiz';
@@ -32,6 +33,10 @@ export default function App() {
   };
 
   const handleQuizEnd = (progress) => {
+    // Save the score to localStorage
+    if (selectedTopic) {
+      saveScore(lang, level, selectedTopic, progress.correct, progress.incorrect, progress.total);
+    }
     setQuizProgress(progress);
   };
 

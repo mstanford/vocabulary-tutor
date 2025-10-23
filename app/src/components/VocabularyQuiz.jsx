@@ -54,7 +54,7 @@ export default function VocabularyQuiz({ vocab, lang, selectedTopic, onQuizEnd }
   return (
     <div className="quiz-container">
       <div className="quiz-header">
-        <h2>{currentTopic}</h2>
+        <h2>{selectedTopic}</h2>
         <div className="progress-bar">
           <div
             className="progress-fill"
